@@ -1,0 +1,49 @@
+<script>var ready = function ( fn ) {
+
+    // Sanity check
+    if ( typeof fn !== 'function' ) return;
+
+    // If document is already loaded, run method
+    if ( document.readyState === 'complete'  ) {
+        return fn();
+    }
+
+    // Otherwise, wait until document is loaded
+    // The document has finished loading and the document has been parsed but sub-resources such as images, stylesheets and frames are still loading. The state indicates that the DOMContentLoaded event has been fired.
+    document.addEventListener( 'interactive', fn, false );
+
+    // Alternative: The document and all sub-resources have finished loading. The state indicates that the load event has been fired.
+    // document.addEventListener( 'complete', fn, false );
+
+};
+ready(function() {
+    document.getElementById("main-table").focus();
+});</script>
+<table id="main-table" tabindex=1 ng-keyup="grid.keypressed($event)">
+    <tr ng-repeat="row in grid">
+        <td ng-repeat="cell in row.cells" ng-keyup="alert('keypress')" ng-keypress="cell.keyup()" ng-keydown="cell.keyup()" style="border : 1px dashed #000; margin: 0px; width: {{cell.width}}px; height: {{cell.width}}px;">
+            <a ng-switch="cell.cellType" ng-keyup="grid.keypressed()" ng-keypress="cell.keyup()" ng-keydown="cell.keyup()" ng-click="cell.click()" style="display: block; padding: 8px; width: 100%; height: 100%; background-color: {{cell.selected ? '#ddd' : '#fff'}}">
+                <span ng-switch-when="crate" class="glyphicon glyphicon-gift" aria-hidden="true" style="font-size: 3em; color: skyblue"> </span>
+                <span ng-switch-when="man" class="glyphicon glyphicon-user" aria-hidden="true" style="font-size: 3em"> </span>
+                <span ng-switch-when="storage" class="glyphicon glyphicon-resize-small" aria-hidden="true" style="font-size: 3em; color: orange"> </span>
+                <span ng-switch-when="wall" class="glyphicon glyphicon-ban-circle" aria-hidden="true" style="font-size: 3em; color: black"> </span>
+                <span ng-switch-when="crateANDstorage" class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="font-size: 3em; color: green"> </span>
+                <span ng-switch-when="manANDstorage" class="glyphicon glyphicon-user" aria-hidden="true" style="font-size: 3em; color: red"> </span>
+            </a>
+        </td>
+    </tr>
+</table>
+<br />
+Status: <span ng-bind="success" style="color: green; font-weight: bold"></span>
+<br /><input id="key-control-box"  >
+<table style="position: fixed; right: 5px; top: 5px">
+    <thead>
+        <tr><td>List of Games</td></tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="game in games">
+        <td><a ng-bind="game.name" ng-click="game.load()"></a></td>
+    </tr>  
+    </tbody>
+</table>
+

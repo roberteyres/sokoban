@@ -1,0 +1,59 @@
+<div class="row" tabindex="1" ng-keydown="currentGame.moveMan($event)">
+    <div class="col col-md-1">
+        <h1 class="rotate" style="margin-top: 3em; font-size: 10em; color: #dddfdf;">
+            Sokoban
+        </h1>
+    </div>
+    <div class="col col-md-7">
+        <table>
+            <tbody>
+                <tr ng-repeat="row in currentGame.grid">
+                    <td ng-repeat="cell in row.cells" style="border : 1px dashed #000; margin: 0px; width: {{cell.width}}px; height: {{cell.width}}px;">
+                        <a ng-switch="cell.cellType" ng-click="cell.click()" style="display: block; width: 100%; height: 100%; background-color: {{cell.selected ? '#ddd' : '#fff'}}">
+                            <span ng-switch-when="crate" class="glyphicon glyphicon-gift" aria-hidden="true" style="margin: 5px; font-size: 4em; color:{{cell.complete ? '#0f2' : '#5E2605'}}"> </span>
+                            <span ng-switch-when="man" class="glyphicon glyphicon-user" aria-hidden="true" style="margin: 5px; font-size: 4em; color: #d00"> </span>
+                            <span ng-switch-when="storage" class="glyphicon glyphicon-map-marker blink-me" aria-hidden="true" style="margin: 10px; font-size: 3em; color: #0f2"> </span>
+                            <span ng-switch-when="wall" class="glyphicon glyphicon-stop" aria-hidden="true" style="font-size: 5em"> </span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col col-md-3">
+        <div class="alert alert-success" role="alert">
+            <h2>
+                {{currentGame.name}} 
+                <span class="glyphicon glyphicon-ok" ng-show="currentGame.complete" style="color: #141"> </span>
+                <button type="button" class="btn btn-warning" ng-click="loadGame(currentGame, true)">Reload</button>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-folder-open"> </span> Levels <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="game in games">
+                            <a href="" ng-click="loadGame(game, false)" style="text-decoration: {{game.complete ? 'line-through' : 'none'}}">
+                            <span class="glyphicon glyphicon-flash"> </span>
+                                {{game.name}}</a></li>
+                    </ul>
+                </div>
+            </h2>
+            <p><strong>{{status.text}}</strong></p>
+            
+            <table class="table" style="margin : 10px 5px">
+                <tr>
+                    <th>Completed crates in this game</th>
+                    <td>{{currentGame.grid.numberOfCrateInStorage()}}</td>
+                </tr>
+                <tr>
+                    <th>Moves made in this game</th>
+                    <td>{{currentGame.grid.moveCount}}</td>
+                </tr>
+                <tr>
+                    <th><strong>Completed games</strong></th>
+                    <td>{{status.gamesCompleted}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
